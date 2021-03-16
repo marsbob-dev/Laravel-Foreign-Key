@@ -15,6 +15,9 @@ class CreateTypesTable extends Migration
     {
         Schema::create('types', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
+            $table->unsignedBigInteger('pokemon_id');
+            $table->foreign('pokemon_id')->references('id')->on('pokemon');
             $table->timestamps();
         });
     }

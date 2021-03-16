@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pokemon;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,16 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $pokemon = Pokemon::all();
+        $type = Type::all();
+        return view('pages.type.welcomeType', compact('pokemon', 'type'));
+    }
+
+    public function index2()
+    {
+        $pokemon = Pokemon::all();
+        $type = Type::all();
+        return view('pages.type.listType', compact('pokemon', 'type'));
     }
 
     /**
@@ -24,7 +34,9 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        $pokemon = Pokemon::all();
+        $type = Type::all();
+        return view('pages.pokemon.createType', compact('pokemon', 'type'));
     }
 
     /**
@@ -35,8 +47,16 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateForm = $request->validate([
+            "type" => "string|required",
+        ]);
+    
+        $type=new Type;
+    
+        $type->type=$request->type;
+        
+        return redirect()->back();
+   }
 
     /**
      * Display the specified resource.
@@ -44,9 +64,12 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function show(Type $type)
+    public function show($id)
     {
-        //
+        $pokemon = Pokemon::find($id);
+        $type = Type::all();
+
+        return view('pages.type.show.showType', compact('pokemon', 'type'));
     }
 
     /**
@@ -55,9 +78,12 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(Type $type)
+    public function edit($id)
     {
-        //
+        $pokemon = Pokemon::all();
+        $equipes = Type::find($id);
+
+        return view('pages.type.editType', compact('pokemon', 'type'));
     }
 
     /**
@@ -67,10 +93,18 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $validateForm = $request->validate([
+            "type" => "required",
+        ]);
+    
+        $type=Type::find($id);
+    
+        $type->type=$request->type;
+        
+        return redirect()->back();
+   }
 
     /**
      * Remove the specified resource from storage.
@@ -78,8 +112,11 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy($id)
     {
-        //
+        $type = Type::find($id);
+        $type->delete();
+
+        return redirect()->back();
     }
 }

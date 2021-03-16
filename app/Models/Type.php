@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     use HasFactory;
+    public function pokemon()
+    {
+        return $this->belongsTo(Pokemon::class, 'pokemon_id');
+    }
 }
